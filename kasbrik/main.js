@@ -12,6 +12,21 @@ var vel = {
   dy: -2
 };
 
+var paddle = {
+  width: 75,
+  height: 10,
+  x: (canvas.width - 75)/2
+};
+// paddle["x"] = (canvas.width - paddle.width)/2;
+
+function drawPaddle() {
+  ctx.beginPath();
+  ctx.rect(paddle.x, canvas.height - paddle.height, paddle.width, paddle.height);
+  ctx.fillStyle = "red";
+  ctx.fill();
+  ctx.closePath();
+}
+
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
@@ -22,6 +37,7 @@ function drawBall() {
 
 function draw() { // Boucle de jeu
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
+  drawPaddle();
   drawBall(); // Dessine la balle
 
   if (ball.x - ball.radius + vel.dx < 0 || ball.x + ball.radius + vel.dx > canvas.width) { // Collision à gauche ou à droite
