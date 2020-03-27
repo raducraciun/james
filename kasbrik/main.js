@@ -7,6 +7,11 @@ var ball = {
   y: canvas.height - 30
 };
 
+var vel = {
+  x: 2,
+  y: -2
+};
+
 function drawBall() {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
@@ -16,7 +21,11 @@ function drawBall() {
 }
 
 function draw() { // Boucle de jeu
-  drawBall();
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
+  drawBall(); // Dessine la balle
+
+  ball.x += vel.x; // Anime la balle
+  ball.y += vel.y;
 
   requestAnimationFrame(draw);
 }
