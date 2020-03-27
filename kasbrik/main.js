@@ -4,20 +4,17 @@ var ctx = canvas.getContext("2d"); // Contexte 2D
 var ball = {
   radius: 10,
   x: canvas.width/2,
-  y: canvas.height - 30
-};
-
-var vel = {
-  dx: 2,
+  y: canvas.height - 30,
+  dx: 2, // Vitesses en x et y
   dy: -2
 };
 
 var paddle = {
   width: 75,
   height: 10,
-  x: (canvas.width - 75)/2
+  x: (canvas.width - 75)/2,
+  dx: 7 // Vitesse en x
 };
-// paddle["x"] = (canvas.width - paddle.width)/2;
 
 function drawPaddle() {
   ctx.beginPath();
@@ -40,16 +37,16 @@ function draw() { // Boucle de jeu
   drawPaddle();
   drawBall(); // Dessine la balle
 
-  if (ball.x - ball.radius + vel.dx < 0 || ball.x + ball.radius + vel.dx > canvas.width) { // Collision à gauche ou à droite
-    vel.dx = -vel.dx; // Changement de direction horizontale
+  if (ball.x - ball.radius + ball.dx < 0 || ball.x + ball.radius + ball.dx > canvas.width) { // Collision à gauche ou à droite
+    ball.dx = -ball.dx; // Changement de direction horizontale
   }
 
-  if (ball.y - ball.radius + vel.dy < 0) { // Collision en haut
-    vel.dy = -vel.dy; // Changement de direction verticale
+  if (ball.y - ball.radius + ball.dy < 0) { // Collision en haut
+    ball.dy = -ball.dy; // Changement de direction verticale
   }
 
-  ball.x += vel.dx; // Anime la balle
-  ball.y += vel.dy;
+  ball.x += ball.dx; // Anime la balle
+  ball.y += ball.dy;
 
   requestAnimationFrame(draw);
 }
