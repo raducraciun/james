@@ -32,10 +32,43 @@ function drawPaddle() {
   ctx.closePath();
 }
 
+var pressedKey = {
+  left: false,
+  right: false
+};
+
+function keyDownHandler(event) {
+  if (event.keyCode == 37) {
+    pressedKey.left = true;
+  }
+  else if (event.keyCode == 39) {
+    pressedKey.right = true;
+  }
+}
+
+function keyUpHandler(event) {
+  if (event.keyCode == 37) {
+    pressedKey.left = false;
+  }
+  else if (event.keyCode == 39) {
+    pressedKey.right = false;
+  }
+}
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
 function draw() { // Boucle de jeu
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
-  drawPaddle();
   drawBall(); // Dessine la balle
+  drawPaddle();
+
+  if (pressedKey.left) {
+    paddle.x -= paddle.dx;
+  }
+  else if (pressedKey.right) {
+    paddle.x += paddle.dx;
+  }
 
   if (ball.x - ball.radius + ball.dx < 0 || ball.x + ball.radius + ball.dx > canvas.width) { // Collision à gauche ou à droite
     ball.dx = -ball.dx; // Changement de direction horizontale
