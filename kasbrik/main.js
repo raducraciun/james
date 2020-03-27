@@ -75,10 +75,10 @@ function draw() { // Boucle de jeu
   }
 
   /* Animations du plateau */
-  if (pressedKey.left) {
+  if (pressedKey.left && paddle.x > 0) {
     paddle.x -= paddle.dx;
   }
-  else if (pressedKey.right) {
+  else if (pressedKey.right && (paddle.x + paddle.width) < canvas.width) {
     paddle.x += paddle.dx;
   }
 
