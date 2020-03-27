@@ -9,6 +9,14 @@ var ball = {
   dy: -2
 };
 
+function drawBall() {
+  ctx.beginPath();
+  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
+  ctx.fillStyle = "blue";
+  ctx.fill();
+  ctx.closePath();
+}
+
 var paddle = {
   width: 75,
   height: 10,
@@ -20,14 +28,6 @@ function drawPaddle() {
   ctx.beginPath();
   ctx.rect(paddle.x, canvas.height - paddle.height, paddle.width, paddle.height);
   ctx.fillStyle = "red";
-  ctx.fill();
-  ctx.closePath();
-}
-
-function drawBall() {
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
-  ctx.fillStyle = "blue";
   ctx.fill();
   ctx.closePath();
 }
