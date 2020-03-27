@@ -5,7 +5,7 @@ var ball = {
   radius: 10,
   x: canvas.width/2,
   y: canvas.height - 30,
-  dx: 2, // Vitesses en x et y
+  dx: 2, // Incréments en x et y
   dy: -2
 };
 
@@ -21,7 +21,7 @@ var paddle = {
   width: 75,
   height: 10,
   x: (canvas.width - 75)/2,
-  dx: 7 // Vitesse en x
+  dx: 7 // Incrément en x
 };
 
 function drawPaddle() {
@@ -67,10 +67,16 @@ function draw() { // Boucle de jeu
   ball.x += ball.dx;
   ball.y += ball.dy;
 
-  if (ball.x - ball.radius + ball.dx < 0 || ball.x + ball.radius + ball.dx > canvas.width) { // Collision de la balle sur les côtés
+  if (ball.x - ball.radius + ball.dx < 0 || ball.x + ball.radius + ball.dx > canvas.width) { // Collision horizontale
     ball.dx = -ball.dx; // Changement de direction horizontale
   }
-  if (ball.y - ball.radius + ball.dy < 0) { // Collision de la balle en haut
+  if (ball.y - ball.radius + ball.dy < 0 || // Collision avec le mur du haut
+      (
+        ball.x + ball.dx > paddle.x &&
+        ball.x + ball.dx < paddle.x + paddle.width &&
+        ball.y + ball.radius + ball.dy > canvas.height - paddle.height
+      )
+    ) { // Collision avec le plateau
     ball.dy = -ball.dy; // Changement de direction verticale
   }
 
