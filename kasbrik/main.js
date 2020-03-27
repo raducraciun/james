@@ -8,8 +8,8 @@ var ball = {
 };
 
 var vel = {
-  x: 2,
-  y: -2
+  dx: 2,
+  dy: -2
 };
 
 function drawBall() {
@@ -24,8 +24,16 @@ function draw() { // Boucle de jeu
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
   drawBall(); // Dessine la balle
 
-  ball.x += vel.x; // Anime la balle
-  ball.y += vel.y;
+  if (ball.x - ball.radius + vel.dx < 0 || ball.x + ball.radius + vel.dx > canvas.width) { // Collision à gauche ou à droite
+    vel.dx = -vel.dx; // Changement de direction horizontale
+  }
+
+  if (ball.y - ball.radius + vel.dy < 0) { // Collision en haut
+    vel.dy = -vel.dy; // Changement de direction verticale
+  }
+
+  ball.x += vel.dx; // Anime la balle
+  ball.y += vel.dy;
 
   requestAnimationFrame(draw);
 }
