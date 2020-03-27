@@ -70,14 +70,18 @@ function draw() { // Boucle de jeu
   if (ball.x - ball.radius + ball.dx < 0 || ball.x + ball.radius + ball.dx > canvas.width) { // Collision horizontale
     ball.dx = -ball.dx; // Changement de direction horizontale
   }
-  if (ball.y - ball.radius + ball.dy < 0 || // Collision avec le mur du haut
-      (
-        ball.x + ball.dx > paddle.x &&
-        ball.x + ball.dx < paddle.x + paddle.width &&
-        ball.y + ball.radius + ball.dy > canvas.height - paddle.height
-      )
-    ) { // Collision avec le plateau
+  if (ball.y - ball.radius + ball.dy < 0) { // Collision avec le mur du haut
     ball.dy = -ball.dy; // Changement de direction verticale
+  }
+  else if (ball.y + ball.radius + ball.dy > canvas.height/* - paddle.height*/) {
+    if (ball.x/* + ball.dx */> paddle.x &&
+        ball.x/* + ball.dx */< paddle.x + paddle.width) {
+      ball.dy = -ball.dy; // Changement de direction verticale
+    }
+    else { // Fin du jeu
+      alert("GAME OVER");
+      document.location.reload();
+    }
   }
 
   /* Animations du plateau */
