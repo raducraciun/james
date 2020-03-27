@@ -60,26 +60,27 @@ document.addEventListener("keyup", keyUpHandler, false);
 
 function draw() { // Boucle de jeu
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
-  drawBall(); // Dessine la balle
+  drawBall();
   drawPaddle();
 
+  /* Animations de la balle */
+  ball.x += ball.dx;
+  ball.y += ball.dy;
+
+  if (ball.x - ball.radius + ball.dx < 0 || ball.x + ball.radius + ball.dx > canvas.width) { // Collision de la balle sur les côtés
+    ball.dx = -ball.dx; // Changement de direction horizontale
+  }
+  if (ball.y - ball.radius + ball.dy < 0) { // Collision de la balle en haut
+    ball.dy = -ball.dy; // Changement de direction verticale
+  }
+
+  /* Animations du plateau */
   if (pressedKey.left) {
     paddle.x -= paddle.dx;
   }
   else if (pressedKey.right) {
     paddle.x += paddle.dx;
   }
-
-  if (ball.x - ball.radius + ball.dx < 0 || ball.x + ball.radius + ball.dx > canvas.width) { // Collision à gauche ou à droite
-    ball.dx = -ball.dx; // Changement de direction horizontale
-  }
-
-  if (ball.y - ball.radius + ball.dy < 0) { // Collision en haut
-    ball.dy = -ball.dy; // Changement de direction verticale
-  }
-
-  ball.x += ball.dx; // Anime la balle
-  ball.y += ball.dy;
 
   requestAnimationFrame(draw);
 }
