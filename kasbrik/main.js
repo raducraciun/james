@@ -72,7 +72,8 @@ for (var c = 0; c < brickColCount; c++) {
       padding: 10,
       offsetTop: 30,
       offsetLeft: 30,
-      color: "#0095DD"
+      color: "#0095DD",
+      isHit: false
     };
   }
 }
@@ -80,16 +81,20 @@ for (var c = 0; c < brickColCount; c++) {
 function drawBricks() {
   for (var c = 0; c < brickColCount; c++) {
     for (var r = 0; r < brickRowCount; r++) {
-      var brick = bricks[c][r]; // Référence
-      var x = c*(brick.width + brick.padding) + brick.offsetLeft;
-      var y = r*(brick.height + brick.padding) + brick.offsetTop;
-      brick.x = x;
-      brick.y = y;
-      ctx.beginPath();
-      ctx.rect(x, y, brick.width, brick.height);
-      ctx.fillStyle = brick.color;
-      ctx.fill();
-      ctx.closePath();
+      var brick = bricks[c][r];
+
+      if (brick.isHit == false) {
+        var brick = bricks[c][r]; // Référence
+        var x = c*(brick.width + brick.padding) + brick.offsetLeft;
+        var y = r*(brick.height + brick.padding) + brick.offsetTop;
+        brick.x = x;
+        brick.y = y;
+        ctx.beginPath();
+        ctx.rect(x, y, brick.width, brick.height);
+        ctx.fillStyle = brick.color;
+        ctx.fill();
+        ctx.closePath();
+      }
     }
   }
 }
@@ -126,6 +131,23 @@ function draw() { // Boucle de jeu
   }
   else if (pressedKey.right && (paddle.x + paddle.width) < canvas.width) {
     paddle.x += paddle.dx;
+  }
+
+  /* Détection des collisions avec les briques */
+  for (var c = 0; c < brickColCount; c++) {
+    for (var r = 0; r < brickRowCount; r++) {
+      var brick = bricks[c][r];
+
+      if (brick.isHit == false) {
+        if(ball.x + ball.radius > brick.x &&
+            ball.x - ball.radius < brick.x + brick.width &&
+            ball.y + ball.radius > brick.y &&
+            ball.y - ball.radius < brick.y + brick.height) {
+          ball.dy = -ball.dy;
+          brick.isHit = true;
+        }
+      }
+    }
   }
 
   requestAnimationFrame(draw);
