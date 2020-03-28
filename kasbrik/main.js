@@ -166,8 +166,8 @@ function draw() { // Boucle de jeu
     alert("YOU WIN");
     document.location.reload();
   }
-  
+
   requestAnimationFrame(draw);
 }
 
-requestAnimationFrame(draw);
+draw();
