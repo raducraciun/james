@@ -5,8 +5,8 @@ var ball = {
   radius: 10,
   x: canvas.width/2,
   y: canvas.height - 30,
-  dx: 2, // Incréments en x et y
-  dy: -2
+  dx: 5, // Incréments en x et y
+  dy: -5
 };
 
 function drawBall() {
@@ -99,8 +99,17 @@ function drawBricks() {
   }
 }
 
+var score = 0;
+
+function drawScore() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Score : " + score, 8, 20);
+}
+
 function draw() { // Boucle de jeu
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
+  drawScore();
   drawBricks();
   drawBall();
   drawPaddle();
@@ -121,7 +130,7 @@ function draw() { // Boucle de jeu
       ball.dy = -ball.dy; // Changement de direction verticale
   }
   if (ball.y + ball.radius > canvas.height) { // Fin du jeu
-    alert("GAME OVER");
+    alert("YOU LOSE");
     document.location.reload();
   }
 
@@ -145,10 +154,13 @@ function draw() { // Boucle de jeu
             ball.y - ball.radius < brick.y + brick.height) {
           ball.dy = -ball.dy;
           brick.isHit = true;
+
+          score++;
         }
       }
     }
   }
+
 
   requestAnimationFrame(draw);
 }
