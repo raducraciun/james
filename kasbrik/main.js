@@ -80,13 +80,14 @@ for (var c = 0; c < brickColCount; c++) {
 function drawBricks() {
   for (var c = 0; c < brickColCount; c++) {
     for (var r = 0; r < brickRowCount; r++) {
-      var x = c*(bricks[c][r].width + bricks[c][r].padding) + bricks[c][r].offsetLeft;
-      var y = r*(bricks[c][r].height + bricks[c][r].padding) + bricks[c][r].offsetTop;
-      bricks[c][r].x = x;
-      bricks[c][r].y = y;
+      var brick = bricks[c][r]; // Référence
+      var x = c*(brick.width + brick.padding) + brick.offsetLeft;
+      var y = r*(brick.height + brick.padding) + brick.offsetTop;
+      brick.x = x;
+      brick.y = y;
       ctx.beginPath();
-      ctx.rect(x, y, bricks[c][r].width, bricks[c][r].height);
-      ctx.fillStyle = bricks[c][r].color;
+      ctx.rect(x, y, brick.width, brick.height);
+      ctx.fillStyle = brick.color;
       ctx.fill();
       ctx.closePath();
     }
