@@ -5,8 +5,8 @@ var ball = {
   radius: 10,
   x: canvas.width/2,
   y: canvas.height - 30,
-  dx: 5, // Incréments en x et y
-  dy: -5
+  dx: 3, // Incréments en x et y
+  dy: -3
 };
 
 function drawBall() {
@@ -77,6 +77,7 @@ for (var c = 0; c < brickColCount; c++) {
     };
   }
 }
+var hitBricks = 0
 
 function drawBricks() {
   for (var c = 0; c < brickColCount; c++) {
@@ -129,7 +130,7 @@ function draw() { // Boucle de jeu
     )) {
       ball.dy = -ball.dy; // Changement de direction verticale
   }
-  if (ball.y + ball.radius > canvas.height) { // Fin du jeu
+  if (ball.y + ball.radius > canvas.height) { // Partie perdue
     alert("YOU LOSE");
     document.location.reload();
   }
@@ -154,14 +155,18 @@ function draw() { // Boucle de jeu
             ball.y - ball.radius < brick.y + brick.height) {
           ball.dy = -ball.dy;
           brick.isHit = true;
-
+          hitBricks++;
           score++;
         }
       }
     }
   }
 
-
+  if (hitBricks >= brickColCount*brickRowCount) { // Partie gagnée
+    alert("YOU WIN");
+    document.location.reload();
+  }
+  
   requestAnimationFrame(draw);
 }
 
