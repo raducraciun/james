@@ -58,8 +58,44 @@ function keyUpHandler(event) {
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
+var brickColCount = 7, brickRowCount = 3;
+
+var bricks = []; // Tableau 2D de briques
+for (var c = 0; c < brickColCount; c++) {
+  bricks[c] = [];
+  for (var r = 0; r < brickRowCount; r++) {
+    bricks[c][r] = {
+      x: 0,
+      y: 0,
+      width: 75,
+      height: 20,
+      padding: 10,
+      offsetTop: 30,
+      offsetLeft: 30,
+      color: "#0095DD"
+    };
+  }
+}
+
+function drawBricks() {
+  for (var c = 0; c < brickColCount; c++) {
+    for (var r = 0; r < brickRowCount; r++) {
+      var x = c*(bricks[c][r].width + bricks[c][r].padding) + bricks[c][r].offsetLeft;
+      var y = r*(bricks[c][r].height + bricks[c][r].padding) + bricks[c][r].offsetTop;
+      bricks[c][r].x = x;
+      bricks[c][r].y = y;
+      ctx.beginPath();
+      ctx.rect(x, y, bricks[c][r].width, bricks[c][r].height);
+      ctx.fillStyle = bricks[c][r].color;
+      ctx.fill();
+      ctx.closePath();
+    }
+  }
+}
+
 function draw() { // Boucle de jeu
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
+  drawBricks();
   drawBall();
   drawPaddle();
 
@@ -67,21 +103,20 @@ function draw() { // Boucle de jeu
   ball.x += ball.dx;
   ball.y += ball.dy;
 
-  if (ball.x - ball.radius + ball.dx < 0 || ball.x + ball.radius + ball.dx > canvas.width) { // Collision horizontale
+  if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) { // Collision horizontale
     ball.dx = -ball.dx; // Changement de direction horizontale
   }
-  if (ball.y - ball.radius + ball.dy < 0) { // Collision avec le mur du haut
-    ball.dy = -ball.dy; // Changement de direction verticale
-  }
-  else if (ball.y + ball.radius + ball.dy > canvas.height/* - paddle.height*/) {
-    if (ball.x/* + ball.dx */> paddle.x &&
-        ball.x/* + ball.dx */< paddle.x + paddle.width) {
+  if (
+      (ball.y - ball.radius < 0) || // Collision avec le bord haut
+        (ball.x > paddle.x && // Collision avec le plateau
+        (ball.x < paddle.x + paddle.width) &&
+        (ball.y + ball.radius > canvas.height - paddle.height)
+    )) {
       ball.dy = -ball.dy; // Changement de direction verticale
-    }
-    else { // Fin du jeu
-      alert("GAME OVER");
-      document.location.reload();
-    }
+  }
+  if (ball.y + ball.radius > canvas.height) { // Fin du jeu
+    alert("GAME OVER");
+    document.location.reload();
   }
 
   /* Animations du plateau */
