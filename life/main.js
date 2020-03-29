@@ -35,7 +35,7 @@ function drawCells() {
   }
 }
 
-var clickedButton = {
+var mouseClickedButton = {
   main: false
 };
 
@@ -46,7 +46,7 @@ var mouseRelativePosition = { // Position relative à l'élément cliqué
 
 function mouseClickHandler(event) {
   if (event.button == 0) { // Clic principal (souvent gauche)
-    clickedButton.main = true;
+    mouseClickedButton.main = true;
     mouseRelativePosition.x = event.offsetX;
     mouseRelativePosition.y = event.offsetY;
   }
@@ -58,13 +58,13 @@ function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
   drawCells();
 
-  if (clickedButton.main) {
+  if (mouseClickedButton.main) {
     var r = Math.floor(mouseRelativePosition.y*nbRows/canvas.height),
         c = Math.floor(mouseRelativePosition.x*nbCols/canvas.width);
 
     cells[r][c].isAlive = !cells[r][c].isAlive;
   }
-  clickedButton.main = false;
+  mouseClickedButton.main = false;
 
   requestAnimationFrame(gameLoop);
 }
