@@ -10,7 +10,7 @@ for (var i = 0; i < nbRows; i++) {
   cellsBuff[i] = [];
   for (var j = 0; j < nbCols; j++) {
     cells[i][j] = {isAlive: false};
-    // cellsBuff[i][j] = {isAlive: false};
+    cellsBuff[i][j] = {isAlive: false};
   }
 }
 
@@ -103,19 +103,35 @@ function countAliveNeighbours(row, col) {
   return count;
 }
 
-function nextLifecylce() {
+function nextLifecycle() {
   for (var i = 0; i < nbRows; i++) {
-    cellsBuff[i] = [...cells[i]];
+    for (var j = 0; j < nbCols; j++) {
+      Object.assign(cellsBuff[i][j], cells[i][j])
+    }
   }
 
   for (var i = 0; i < nbRows; i++) {
     for (var j = 0; j < nbCols; j++) {
-      console.log(countAliveNeighbours(i, j));
+      var cell = cells[i][j];
+      var n = countAliveNeighbours(i, j);
+      if ((cell.isAlive && (n == 2 || n == 3)) ||
+          (!cell.isAlive && n == 3)) {
+        cellsBuff[i][j].isAlive = true;
+      }
+      else {
+        cellsBuff[i][j].isAlive = false;
+      }
+    }
+  }
+
+  for (var i = 0; i < nbRows; i++) {
+    for (var j = 0; j < nbCols; j++) {
+      Object.assign(cells[i][j], cellsBuff[i][j])
     }
   }
 }
 
-document.getElementById("btnNextLifecycle").addEventListener("click", nextLifecylce)
+document.getElementById("btnNextLifecycle").addEventListener("click", nextLifecycle)
 
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
