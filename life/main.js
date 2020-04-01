@@ -1,14 +1,16 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d"); // Contexte 2D
 
-var cells = [];
+var cells = [], cellsBuff = []; // Tableaux de cellules primaire et secondaire
 var nbCols = canvas.width/16, // 40
 nbRows = canvas.height/16; // 30
 
 for (var i = 0; i < nbRows; i++) {
   cells[i] = [];
+  cellsBuff[i] = [];
   for (var j = 0; j < nbCols; j++) {
     cells[i][j] = {isAlive: false};
+    // cellsBuff[i][j] = {isAlive: false};
   }
 }
 
@@ -52,19 +54,27 @@ function mouseClickHandler(event) {
   }
 }
 
-canvas.addEventListener("click", mouseClickHandler, false);
+canvas.addEventListener("click", mouseClickHandler);
+
+function nextLifecylce() {
+  for (var i = 0; i < nbRows; i++) {
+    cellsBuff[i] = [...cells[i]];
+  }
+}
+
+document.getElementById("btnNextLifecycle").addEventListener("click", nextLifecylce)
 
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
   drawCells();
 
   if (mouseClickedButton.main) {
+    mouseClickedButton.main = false;
     var r = Math.floor(mouseRelativePosition.y*nbRows/canvas.height),
         c = Math.floor(mouseRelativePosition.x*nbCols/canvas.width);
 
     cells[r][c].isAlive = !cells[r][c].isAlive;
   }
-  mouseClickedButton.main = false;
 
   requestAnimationFrame(gameLoop);
 }
