@@ -56,9 +56,62 @@ function mouseClickHandler(event) {
 
 canvas.addEventListener("click", mouseClickHandler);
 
+function countAliveNeighbours(row, col) {
+  var count = 0;
+
+  if (row - 1 >= 0) {
+    if (col - 1 >= 0) {
+      if (cells[row - 1][col - 1].isAlive) {
+        count++;
+      }
+    }
+    if (cells[row - 1][col].isAlive) {
+      count++;
+    }
+    if (col + 1 < nbCols) {
+      if (cells[row - 1][col + 1].isAlive) {
+        count++;
+      }
+    }
+  }
+  if (col - 1 >= 0) {
+    if (cells[row][col - 1].isAlive) {
+      count++;
+    }
+  }
+  if (col + 1 < nbCols) {
+    if (cells[row][col + 1].isAlive) {
+      count++;
+    }
+  }
+  if (row + 1 < nbRows) {
+    if (col - 1 >= 0) {
+      if (cells[row + 1][col - 1].isAlive) {
+        count++;
+      }
+    }
+    if (cells[row + 1][col].isAlive) {
+      count++;
+    }
+    if (col + 1 < nbCols) {
+      if (cells[row + 1][col + 1].isAlive) {
+        count++;
+      }
+    }
+  }
+
+  return count;
+}
+
 function nextLifecylce() {
   for (var i = 0; i < nbRows; i++) {
     cellsBuff[i] = [...cells[i]];
+  }
+
+  for (var i = 0; i < nbRows; i++) {
+    for (var j = 0; j < nbCols; j++) {
+      console.log(countAliveNeighbours(i, j));
+    }
   }
 }
 
