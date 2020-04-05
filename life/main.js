@@ -1,18 +1,26 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d"); // Contexte 2D
 
-var cells = [], cellsBuff = []; // Tableaux de cellules primaire et secondaire
 var nbCols = canvas.width/16, // 40
 nbRows = canvas.height/16; // 30
-
+var cells = [], cellsBuff = []; // Tableaux de cellules primaire et secondaire
 for (var i = 0; i < nbRows; i++) {
   cells[i] = [];
   cellsBuff[i] = [];
-  for (var j = 0; j < nbCols; j++) {
-    cells[i][j] = {isAlive: false};
-    cellsBuff[i][j] = {isAlive: false};
+}
+
+function resetArrays() { // Initialise les tableaux
+  for (var i = 0; i < nbRows; i++) {
+    for (var j = 0; j < nbCols; j++) {
+      cells[i][j] = {isAlive: false};
+      cellsBuff[i][j] = {isAlive: false};
+    }
   }
 }
+
+resetArrays();
+
+document.getElementById("btnReset").addEventListener("click", resetArrays);
 
 function drawCells() {
   for (var i = 0; i < nbRows; i++) {
@@ -46,7 +54,7 @@ var mouseRelativePosition = { // Position relative à l'élément cliqué
   y: 0
 };
 
-function mouseClickHandler(event) {
+function mouseClickHandler(event) { // TODO: RENOMMER
   if (event.button == 0) { // Clic principal (souvent gauche)
     mouseClickedButton.main = true;
     mouseRelativePosition.x = event.offsetX;
