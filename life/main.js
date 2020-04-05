@@ -114,7 +114,7 @@ function countAliveNeighbours(row, col) {
 function nextLifecycle() {
   for (var i = 0; i < nbRows; i++) {
     for (var j = 0; j < nbCols; j++) {
-      Object.assign(cellsBuff[i][j], cells[i][j])
+      Object.assign(cellsBuff[i][j], cells[i][j]) // Copie vers le tableau tampon
     }
   }
 
@@ -134,12 +134,30 @@ function nextLifecycle() {
 
   for (var i = 0; i < nbRows; i++) {
     for (var j = 0; j < nbCols; j++) {
-      Object.assign(cells[i][j], cellsBuff[i][j])
+      Object.assign(cells[i][j], cellsBuff[i][j])  // Copie depuis le tableau tampon
     }
   }
 }
 
 document.getElementById("btnNextLifecycle").addEventListener("click", nextLifecycle)
+
+var autoPlay = {
+  isOn: false,
+  interval: 250,
+  returnVar: undefined // Utile pour les fonctions setInterval et clearInterval
+};
+
+document.getElementById("btnAutoPlay").addEventListener("click", function () {
+  autoPlay.isOn = true;
+  autoPlay.returnVar = setInterval(nextLifecycle, autoPlay.interval);
+})
+
+document.getElementById("btnStop").addEventListener("click", function () {
+  autoPlay.isOn = false;
+  clearInterval(autoPlay.returnVar);
+  autoPlay.returnVar = undefined;
+})
+
 
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
