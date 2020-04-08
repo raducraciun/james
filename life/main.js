@@ -54,15 +54,14 @@ var mouseRelativePosition = { // Position relative à l'élément cliqué
   y: 0
 };
 
-function mouseClickHandler(event) { // TODO: RENOMMER
+
+canvas.addEventListener("click", function (event) {
   if (event.button == 0) { // Clic principal (souvent gauche)
     mouseClickedButton.main = true;
     mouseRelativePosition.x = event.offsetX;
     mouseRelativePosition.y = event.offsetY;
   }
-}
-
-canvas.addEventListener("click", mouseClickHandler);
+});
 
 function countAliveNeighbours(row, col) {
   var count = 0;
