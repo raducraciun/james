@@ -20,7 +20,10 @@ function resetArrays() { // Initialise les tableaux
 
 resetArrays();
 
-document.getElementById("btnReset").addEventListener("click", resetArrays);
+document.getElementById("btnReset").addEventListener("click", function () {
+  resetArrays();
+  autoPlay.isOn = false; // Valide car autoPlay est déclaré avec "var"
+});
 
 function drawCells() {
   for (var i = 0; i < nbRows; i++) {
