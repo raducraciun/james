@@ -143,8 +143,10 @@ var autoPlay = {
 };
 
 document.getElementById("btnAutoPlay").addEventListener("click", function () {
-  autoPlay.isOn = true;
-  autoPlay.returnVar = setInterval(nextLifecycle, autoPlay.interval);
+  if (!autoPlay.isOn) {
+    autoPlay.isOn = true;
+    autoPlay.returnVar = setInterval(nextLifecycle, autoPlay.interval);
+  }
 })
 
 document.getElementById("btnStop").addEventListener("click", function () {
