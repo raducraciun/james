@@ -20,6 +20,8 @@ function resetArrays() { // Initialise les tableaux
 
 resetArrays();
 
+// IDEA: UTILISER UN OBJET POUR SURVEILLER L'ETAT DES BOUTONS => IMPLANTER L'EXCLUSION MUTUELLE DE CERTAINS BOUTONS
+
 document.getElementById("btnReset").addEventListener("click", function () {
   resetArrays();
   autoPlay.isOn = false; // Valide car autoPlay est déclaré avec "var"
