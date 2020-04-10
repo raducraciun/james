@@ -143,7 +143,8 @@ document.getElementById("btnNextLifecycle").addEventListener("click", nextLifecy
 
 var autoPlay = {
   isOn: false,
-  interval: 250,
+  maxInterval: 250, // Constant
+  interval: 250, // Variable
   returnVar: undefined // Utile pour les fonctions setInterval et clearInterval
 };
 
@@ -157,8 +158,13 @@ document.getElementById("btnAutoPlay").addEventListener("click", function () {
 document.getElementById("sldrValue").innerHTML = document.getElementById("sldrInput").value; // Affiche la valeur dès le chargement de la page
 
 document.getElementById("sldrInput").oninput = function () {
-  document.getElementById("sldrValue").innerHTML = this.value;
-} // Met à jour la valeur affichée
+  document.getElementById("sldrValue").innerHTML = this.value; // Met à jour la valeur affichée
+  autoPlay.interval = autoPlay.maxInterval/this.value;
+  if (autoPlay.isOn) {
+    clearInterval(autoPlay.returnVar);
+    autoPlay.returnVar = setInterval(nextLifecycle, autoPlay.interval);
+  }
+}
 
 document.getElementById("btnStop").addEventListener("click", function () {
   autoPlay.isOn = false;
