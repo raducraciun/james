@@ -152,6 +152,12 @@ document.getElementById("btnAutoPlay").addEventListener("click", function () {
   }
 })
 
+document.getElementById("sldrValue").innerHTML = document.getElementById("sldrInput").value; // Affiche la valeur dès le chargement de la page
+
+document.getElementById("sldrInput").oninput = function () {
+  document.getElementById("sldrValue").innerHTML = this.value;
+} // Met à jour la valeur affichée
+
 document.getElementById("btnStop").addEventListener("click", function () {
   autoPlay.isOn = false;
   clearInterval(autoPlay.returnVar);
