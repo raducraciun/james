@@ -139,7 +139,11 @@ function nextLifecycle() {
   }
 }
 
-document.getElementById("btnNextLifecycle").addEventListener("click", nextLifecycle)
+document.getElementById("btnNextLifecycle").addEventListener("click", function () {
+    if (!autoPlay.isOn) {
+      nextLifecycle();
+    }
+})
 
 var autoPlay = {
   isOn: false,
