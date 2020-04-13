@@ -39,10 +39,10 @@ function drawCells() {
       ctx.beginPath();
       ctx.rect(x, y, cellW, cellH);
       if (cell.isAlive == true) {
-        ctx.fillStyle = "#009900"
+        ctx.fillStyle = "#007f00"
       }
       else {
-        ctx.fillStyle = "#aaa";
+        ctx.fillStyle = "#909090";
       }
       ctx.fill();
       ctx.closePath();
