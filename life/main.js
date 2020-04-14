@@ -1,14 +1,16 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d"); // Contexte 2D
 
-var nbCols = canvas.width/16, // 40
-nbRows = canvas.height/16; // 30
+var iteration = 0;
+var nbCols = canvas.width/16, // L_canvas (px) / L_cellule (px)
+nbRows = canvas.height/16;
 var cells = [], cellsBuff = []; // Tableaux de cellules primaire et secondaire
 for (var i = 0; i < nbRows; i++) {
   cells[i] = [];
   cellsBuff[i] = [];
 }
 
+// TODO: inclure une réinitialisation des autres paramètres et renommer la fonction
 function resetArrays() { // Initialise les tableaux
   for (var i = 0; i < nbRows; i++) {
     for (var j = 0; j < nbCols; j++) {
@@ -48,6 +50,9 @@ function drawCells() {
       ctx.closePath();
     }
   }
+
+  document.getElementById("iteration").innerHTML = "Itération" + " " + iteration;
+
 }
 
 var clickOnCanvasEvent = {
@@ -137,6 +142,8 @@ function nextLifecycle() {
       Object.assign(cells[i][j], cellsBuff[i][j])  // Copie depuis le tableau tampon
     }
   }
+
+  iteration++;
 }
 
 document.getElementById("btnNextLifecycle").addEventListener("click", function () {
