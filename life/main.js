@@ -49,7 +49,6 @@ document.getElementById("btnReset").addEventListener("click", function () {
 function drawCells() {
   for (var i = 0; i < nbRows; i++) {
     for (var j = 0; j < nbCols; j++) {
-      var cell = cells[i][j];
       var cellPad = 2;
       var cellW = canvas.width/nbCols - cellPad,
           cellH = canvas.width/nbCols - cellPad;
@@ -57,7 +56,7 @@ function drawCells() {
       var y = i*(cellH + cellPad) + 1;
       ctx.beginPath();
       ctx.rect(x, y, cellW, cellH);
-      if (cell.isAlive == true) {
+      if (indexOfCell(i, j) >= 0) { // Si la cellule est vivante
         ctx.fillStyle = "#007f00"
       }
       else {
