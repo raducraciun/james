@@ -4,28 +4,45 @@ var ctx = canvas.getContext("2d"); // Contexte 2D
 var iteration = 0;
 var nbCols = canvas.width/16, // L_canvas (px) / L_cellule (px)
 nbRows = canvas.height/16;
-var cells = [], cellsBuff = []; // Tableaux de cellules primaire et secondaire
-for (var i = 0; i < nbRows; i++) {
-  cells[i] = [];
-  cellsBuff[i] = [];
-}
+var cells = [
+  {l: 1, c: 2},
+  {l: 2, c: 3},
+  {l: 3, c: 1},
+  {l: 3, c: 2},
+  {l: 3, c: 3},
+  {l: 4, c: 3},
+  {l: 5, c: 2},
+],
+    cellsBuff = []; // Tableaux de cellules vivantes principal et temporaire
 
 // TODO: inclure une réinitialisation des autres paramètres et renommer la fonction
-function resetArrays() { // Initialise les tableaux
-  for (var i = 0; i < nbRows; i++) {
-    for (var j = 0; j < nbCols; j++) {
-      cells[i][j] = {isAlive: false};
-      cellsBuff[i][j] = {isAlive: false};
-    }
-  }
+function reset() { // Réinitialise certaines variables
+  cells = [];
+  cellsBuff = [];
 }
 
-resetArrays();
+function indexOfCell(row, col) { // Indice de l'objet dans le tableau des cellules
+  var i = 0;
+  var idx = -1;
+  var found = false;
+
+  do {
+    if (cells[i].l == row && cells[i].c == col) {
+      found = true
+      idx = i;
+    }
+    else {
+      i++;
+    }
+  } while (found == false && i < cells.length);
+
+  return idx;
+}
 
 // IDEA: UTILISER UN OBJET POUR SURVEILLER L'ETAT DES BOUTONS => IMPLANTER L'EXCLUSION MUTUELLE DE CERTAINS BOUTONS
 
 document.getElementById("btnReset").addEventListener("click", function () {
-  resetArrays();
+  reset();
   autoPlay.isOn = false; // Valide car autoPlay est déclaré avec "var"
 });
 
