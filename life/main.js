@@ -5,13 +5,13 @@ var iteration = 0;
 var nbCols = canvas.width/16, // L_canvas (px) / L_cellule (px)
 nbRows = canvas.height/16;
 var cells = [
-  {l: 1, c: 2},
-  {l: 2, c: 3},
-  {l: 3, c: 1},
-  {l: 3, c: 2},
-  {l: 3, c: 3},
-  {l: 4, c: 3},
-  {l: 5, c: 2},
+  {r: 0, c: 0},
+  {r: 2, c: 3},
+  {r: 3, c: 1},
+  {r: 3, c: 2},
+  {r: 3, c: 3},
+  {r: 4, c: 3},
+  {r: 5, c: 2},
 ],
     cellsBuff = []; // Tableaux de cellules vivantes principal et temporaire
 
@@ -27,7 +27,7 @@ function indexOfCell(row, col) { // Indice de l'objet dans le tableau des cellul
   var found = false;
 
   do {
-    if (cells[i].l == row && cells[i].c == col) {
+    if (cells[i].r == row && cells[i].c == col) {
       found = true
       idx = i;
     }
@@ -56,6 +56,7 @@ function drawCells() {
       var y = i*(cellH + cellPad) + 1;
       ctx.beginPath();
       ctx.rect(x, y, cellW, cellH);
+
       if (indexOfCell(i, j) >= 0) { // Si la cellule est vivante
         ctx.fillStyle = "#007f00"
       }
@@ -86,50 +87,39 @@ canvas.addEventListener("click", function (event) {
 });
 
 function countAliveNeighbours(row, col) {
-  var count = 0;
+  var ul = 0, u = 0, ur = 0, l = 0, r = 0, dl = 0, d = 0, dr = 0; // Une variable par voisine
 
-  if (row - 1 >= 0) {
-    if (col - 1 >= 0) {
-      if (cells[row - 1][col - 1].isAlive) {
-        count++;
-      }
+  for (var i = 0; i < cells.length; i++) {
+    var r = cells[i].r,
+        c = cells[i].c;
+
+    if (r == row - 1 && c == col - 1) {
+      ul = 1;
     }
-    if (cells[row - 1][col].isAlive) {
-      count++;
+    if (r == row - 1 && c == col) {
+      u = 1;
     }
-    if (col + 1 < nbCols) {
-      if (cells[row - 1][col + 1].isAlive) {
-        count++;
-      }
+    if (r == row - 1 && c == col + 1) {
+      ur = 1;
     }
-  }
-  if (col - 1 >= 0) {
-    if (cells[row][col - 1].isAlive) {
-      count++;
+    if (r == row && c == col - 1) {
+      l = 1;
     }
-  }
-  if (col + 1 < nbCols) {
-    if (cells[row][col + 1].isAlive) {
-      count++;
+    if (r == row && c == col + 1) {
+      r = 1;
     }
-  }
-  if (row + 1 < nbRows) {
-    if (col - 1 >= 0) {
-      if (cells[row + 1][col - 1].isAlive) {
-        count++;
-      }
+    if (r == row + 1 && c == col - 1) {
+      dl = 1;
     }
-    if (cells[row + 1][col].isAlive) {
-      count++;
+    if (r == row + 1 && c == col) {
+      d = 1;
     }
-    if (col + 1 < nbCols) {
-      if (cells[row + 1][col + 1].isAlive) {
-        count++;
-      }
+    if (r == row + 1 && c == col + 1) {
+      dr = 1;
     }
   }
 
-  return count;
+  return ul + u + ur + l + r + dl + d + dr;
 }
 
 function nextLifecycle() {
