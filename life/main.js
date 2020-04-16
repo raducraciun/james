@@ -26,7 +26,7 @@ function indexOfCell(row, col) { // Indice de l'objet dans le tableau des cellul
   var idx = -1;
   var found = false;
 
-  do {
+  while (found == false && i < cells.length) {
     if (cells[i].r == row && cells[i].c == col) {
       found = true
       idx = i;
@@ -34,7 +34,7 @@ function indexOfCell(row, col) { // Indice de l'objet dans le tableau des cellul
     else {
       i++;
     }
-  } while (found == false && i < cells.length);
+  }
 
   return idx;
 }
@@ -69,7 +69,6 @@ function drawCells() {
   }
 
   document.getElementById("iteration").innerHTML = "Itération" + " " + iteration;
-
 }
 
 var clickOnCanvasEvent = {
@@ -123,30 +122,23 @@ function countAliveNeighbours(row, col) {
 }
 
 function nextLifecycle() {
-  for (var i = 0; i < nbRows; i++) {
-    for (var j = 0; j < nbCols; j++) {
-      Object.assign(cellsBuff[i][j], cells[i][j]) // Copie vers le tableau tampon
-    }
-  }
+  cellsBuff = [];
 
   for (var i = 0; i < nbRows; i++) {
     for (var j = 0; j < nbCols; j++) {
-      var cell = cells[i][j];
+      var state = (indexOfCell(i, j) >= 0); // Etat de la celleule courante
       var n = countAliveNeighbours(i, j);
-      if ((cell.isAlive && (n == 2 || n == 3)) ||
-          (!cell.isAlive && n == 3)) {
-        cellsBuff[i][j].isAlive = true;
-      }
-      else {
-        cellsBuff[i][j].isAlive = false;
+
+      console.log(i, j, n);
+      if (n == 3 || (state == true && n == 2)) {
+        cellsBuff.push({r: i, c: j});
       }
     }
   }
 
-  for (var i = 0; i < nbRows; i++) {
-    for (var j = 0; j < nbCols; j++) {
-      Object.assign(cells[i][j], cellsBuff[i][j])  // Copie depuis le tableau tampon
-    }
+  cells = [];
+  for (var i = 0; i < cellsBuff.length; i++) {
+    cells.push(cellsBuff[i]);
   }
 
   iteration++;
