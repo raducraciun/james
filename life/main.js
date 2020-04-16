@@ -4,28 +4,12 @@ var ctx = canvas.getContext("2d"); // Contexte 2D
 var iteration = 0;
 var nbCols = canvas.width/16, // L_canvas (px) / L_cellule (px)
 nbRows = canvas.height/16;
-var cells = [
-  {r: 1, c: 2},
-  {r: 2, c: 3},
-  {r: 3, c: 1},
-  {r: 3, c: 2},
-  {r: 3, c: 3},
-  {r: 4, c: 3},
-  {r: 5, c: 2},
-],
+var cells = [],
     cellsBuff = []; // Tableaux de cellules vivantes principal et temporaire
 
 // TODO: inclure une réinitialisation des autres paramètres et renommer la fonction
 function reset() { // Réinitialise certaines variables
-  cells = [
-    {r: 1, c: 2},
-    {r: 2, c: 3},
-    {r: 3, c: 1},
-    {r: 3, c: 2},
-    {r: 3, c: 3},
-    {r: 4, c: 3},
-    {r: 5, c: 2},
-  ],
+  cells = [],
   cellsBuff = [];
 }
 
@@ -137,7 +121,6 @@ function nextLifecycle() {
       var state = (indexOfCell(i, j) >= 0); // Etat de la celleule courante
       var n = countAliveNeighbours(i, j);
 
-      // console.log(i, j, n);
       if (n == 3 || (state == true && n == 2)) {
         cellsBuff.push({r: i, c: j});
       }
@@ -199,7 +182,13 @@ function gameLoop() {
     var r = Math.floor(clickOnCanvasEvent.y*nbRows/canvas.height),
         c = Math.floor(clickOnCanvasEvent.x*nbCols/canvas.width);
 
-    cells[r][c].isAlive = !cells[r][c].isAlive;
+    var idx = indexOfCell(r, c);
+    if (idx >= 0) { // Si la cellule est déjà vivante ...
+      cells.splice(idx, 1); // ... l'enlever du tableau
+    }
+    else { // Si la cellule est morte ...
+      cells.push({r: r, c: c}) // ... l'ajouter au tableau
+    }
   }
 
   requestAnimationFrame(gameLoop);
