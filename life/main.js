@@ -5,10 +5,11 @@ var iteration = 0;
 var nbCols = canvas.width/16, // L_canvas (px) / L_cellule (px)
 nbRows = canvas.height/16;
 var cells = [],
-    cellsBuff = []; // Tableaux de cellules vivantes principal et temporaire
+  cellsBuff = []; // Tableaux de cellules vivantes principal et temporaire
 
 // TODO: inclure une réinitialisation des autres paramètres et renommer la fonction
 function reset() { // Réinitialise certaines variables
+  iteration = 0;
   cells = [],
   cellsBuff = [];
 }
