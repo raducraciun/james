@@ -5,7 +5,7 @@ var iteration = 0;
 var nbCols = canvas.width/16, // L_canvas (px) / L_cellule (px)
 nbRows = canvas.height/16;
 var cells = [
-  {r: 0, c: 0},
+  {r: 1, c: 2},
   {r: 2, c: 3},
   {r: 3, c: 1},
   {r: 3, c: 2},
@@ -17,7 +17,15 @@ var cells = [
 
 // TODO: inclure une réinitialisation des autres paramètres et renommer la fonction
 function reset() { // Réinitialise certaines variables
-  cells = [];
+  cells = [
+    {r: 1, c: 2},
+    {r: 2, c: 3},
+    {r: 3, c: 1},
+    {r: 3, c: 2},
+    {r: 3, c: 3},
+    {r: 4, c: 3},
+    {r: 5, c: 2},
+  ],
   cellsBuff = [];
 }
 
@@ -89,31 +97,31 @@ function countAliveNeighbours(row, col) {
   var ul = 0, u = 0, ur = 0, l = 0, r = 0, dl = 0, d = 0, dr = 0; // Une variable par voisine
 
   for (var i = 0; i < cells.length; i++) {
-    var r = cells[i].r,
-        c = cells[i].c;
+    var R = cells[i].r, // Facilte la lecture
+        C = cells[i].c;
 
-    if (r == row - 1 && c == col - 1) {
+    if (R == row - 1 && C == col - 1) {
       ul = 1;
     }
-    if (r == row - 1 && c == col) {
+    if (R == row - 1 && C == col) {
       u = 1;
     }
-    if (r == row - 1 && c == col + 1) {
+    if (R == row - 1 && C == col + 1) {
       ur = 1;
     }
-    if (r == row && c == col - 1) {
+    if (R == row && C == col - 1) {
       l = 1;
     }
-    if (r == row && c == col + 1) {
+    if (R == row && C == col + 1) {
       r = 1;
     }
-    if (r == row + 1 && c == col - 1) {
+    if (R == row + 1 && C == col - 1) {
       dl = 1;
     }
-    if (r == row + 1 && c == col) {
+    if (R == row + 1 && C == col) {
       d = 1;
     }
-    if (r == row + 1 && c == col + 1) {
+    if (R == row + 1 && C == col + 1) {
       dr = 1;
     }
   }
@@ -129,7 +137,7 @@ function nextLifecycle() {
       var state = (indexOfCell(i, j) >= 0); // Etat de la celleule courante
       var n = countAliveNeighbours(i, j);
 
-      console.log(i, j, n);
+      // console.log(i, j, n);
       if (n == 3 || (state == true && n == 2)) {
         cellsBuff.push({r: i, c: j});
       }
