@@ -37,6 +37,7 @@ function indexOfCell(row, col) { // Indice de l'objet dans le tableau des cellul
 document.getElementById("btnReset").addEventListener("click", function () {
   reset();
   autoPlay.isOn = false; // Valide car autoPlay est déclaré avec "var"
+  refreshView();
 });
 
 function drawCells() {
@@ -64,17 +65,26 @@ function drawCells() {
   document.getElementById("iteration").innerHTML = "Itération" + " " + iteration;
 }
 
-var clickOnCanvasEvent = {
-  mainButton: false,
-  x: 0,
-  y: 0
-};
+function refreshView() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
+  drawCells();
+}
+
 
 canvas.addEventListener("click", function (event) {
   if (event.button == 0) { // Clic principal (souvent gauche)
-    clickOnCanvasEvent.mainButton = true;
-    clickOnCanvasEvent.x = event.offsetX;
-    clickOnCanvasEvent.y = event.offsetY;
+    var r = Math.floor(event.offsetY*nbRows/canvas.height),
+        c = Math.floor(event.offsetX*nbCols/canvas.width);
+
+    var idx = indexOfCell(r, c);
+    if (idx >= 0) { // Si la cellule est déjà vivante ...
+      cells.splice(idx, 1); // ... l'enlever du tableau
+    }
+    else { // Si la cellule est morte ...
+      cells.push({r: r, c: c}) // ... l'ajouter au tableau
+    }
+
+    refreshView();
   }
 });
 
@@ -139,6 +149,7 @@ function nextLifecycle() {
 document.getElementById("btnNextLifecycle").addEventListener("click", function () {
     if (!autoPlay.isOn) {
       nextLifecycle();
+      refreshView();
     }
 })
 
@@ -152,7 +163,10 @@ var autoPlay = {
 document.getElementById("btnAutoPlay").addEventListener("click", function () {
   if (!autoPlay.isOn) {
     autoPlay.isOn = true;
-    autoPlay.returnVar = setInterval(nextLifecycle, autoPlay.interval);
+    autoPlay.returnVar = setInterval(function () {
+      nextLifecycle();
+      refreshView();
+    }, autoPlay.interval);
   }
 })
 
@@ -173,26 +187,4 @@ document.getElementById("btnStop").addEventListener("click", function () {
   autoPlay.returnVar = undefined;
 })
 
-
-function gameLoop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Efface le canvas
-  drawCells();
-
-  if (clickOnCanvasEvent.mainButton) {
-    clickOnCanvasEvent.mainButton = false;
-    var r = Math.floor(clickOnCanvasEvent.y*nbRows/canvas.height),
-        c = Math.floor(clickOnCanvasEvent.x*nbCols/canvas.width);
-
-    var idx = indexOfCell(r, c);
-    if (idx >= 0) { // Si la cellule est déjà vivante ...
-      cells.splice(idx, 1); // ... l'enlever du tableau
-    }
-    else { // Si la cellule est morte ...
-      cells.push({r: r, c: c}) // ... l'ajouter au tableau
-    }
-  }
-
-  requestAnimationFrame(gameLoop);
-}
-
-gameLoop();
+refreshView(); // Pour le premier affichage de la page
